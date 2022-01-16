@@ -344,7 +344,13 @@ Form.prototype.init = function (){
         nameText.type = 'text';
         nameText.id = 'nameBox'
         document.getElementById('popUpBody').appendChild(nameText);
-        newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add');
+        newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add',
+        [{type: 'click', function: () => {
+            categoryArray.push({optionValue:String(nameText.value), optionText:String(nameText.value)});
+            document.body.removeChild(this.css);
+            document.getElementById('overlay').classList.remove('active');
+        }
+        }]);
         //Instantiates the form for a new brand.
     } else if (this.type === 'brandPopUp') {
         newElement('div','id', 'popUpHeader', this.css);
@@ -360,7 +366,12 @@ Form.prototype.init = function (){
         nameText.type = 'text';
         nameText.id = 'nameBox'
         document.getElementById('popUpBody').appendChild(nameText);
-        newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add');
+        newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add', [{type:'click', function:() => {
+            brandArray.push({optionValue:String(nameText.value), optionText:String(nameText.value)});
+            document.body.removeChild(this.css);
+            document.getElementById('overlay').classList.remove('active');
+            }
+        }]);
 
     }
     this.initValue = true;
