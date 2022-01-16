@@ -21,8 +21,6 @@ let categoryArray = [
 
 let yearArray = [];
 
-
-['TCG', 'Shoes', "Baseball Cards"];
 let filterButton = new Button('New', document.createElement("button"), '#33a1fd', 'white', 'childFilter', 'filterButton', false, false);
 let ownershipTag;
 let buttonObjects = [];
@@ -40,28 +38,16 @@ document.getElementById('filterImgG').addEventListener('click', () => filterMenu
 document.getElementById('filterImgB').addEventListener('click', () => filterMenu('disable'));
 
 document.getElementById('addNewItem').addEventListener('click', () => {
-    //Fixes bug where select boxes duplicate when a new form instantiates and causes applyStyleSelector() to be called.
-    if (document.getElementById('filter')) {
-        filterMenu('disable');
-    }
     let itemForm = new Form('itemPopUp', document.createElement('div'), {}, 'itemPopUp', false);
     itemForm.init();
 })
 
 document.getElementById('addCategory').addEventListener('click', () => {
-    //Fixes bug where select boxes duplicate when a new form instantiates and causes applyStyleSelector() to be called.
-    if (document.getElementById('filter')) {
-        filterMenu('disable');
-    }
     let categoryPopUp = new Form('categoryPopUp', document.createElement('div'), {}, 'categoryPopUp', false);
     categoryPopUp.init()
 })
 
 document.getElementById('addBrand').addEventListener('click', () => {
-    //Fixes bug where select boxes duplicate when a new form instantiates and causes applyStyleSelector() to be called.
-    if (document.getElementById('filter')) {
-        filterMenu('disable');
-    }
     let brandPopUp = new Form('brandPopUp', document.createElement('div'), {}, 'brandPopUp', false);
     brandPopUp.init()
 })
@@ -327,7 +313,6 @@ Form.prototype.init = function (){
         newElement('div', false, null, document.getElementById('popUpBody'), 'Collected:');
         newSelectBox('custom-select', 'width:200px;', 'Collected', 'collectedSelect', document.getElementById('popUpBody'),
         [{optionValue:'null', optionText:'----'}, {optionValue:'null', optionText:'Yes'}, {optionValue:'null', optionText:'No'}])
-        applySelectorStyle();
         newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add',
             [
                 {type:'click', function: () => {
@@ -461,9 +446,7 @@ function filterMenu (option) {
     [{optionValue:'null', optionText:'----'}, {optionValue:'Yes', optionText:'Yes'}, {optionValue:'No', optionText:'No'}])
     document.getElementById('filterImgG').style.display = 'none';
     document.getElementById('filterImgB').style.display = 'flex';
-    applySelectorStyle()
     } else if (option === 'disable') {
-
         document.getElementById('mainContainer').removeChild(document.getElementById('filter'));
         document.getElementById('filterImgG').style.display = 'flex';
         document.getElementById('filterImgB').style.display = 'none';
@@ -511,96 +494,6 @@ function newOption (options, target) {
         target.appendChild(option);
     }
 }
-
-
-
-
-//document.getElementById('brandPopUp').classList.add('active')
-//document.getElementById('overlay').classList.add('active')
-
-/* ------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------*/
-// Custom Drop Down Menu
-/* ------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------*/
-/* Look for any elements with the class "custom-select": */
-function applySelectorStyle() {
-    let customClass = document.getElementsByClassName("custom-select");
-    for (let i = 0; i < customClass.length; i++) {
-        let foundSelectElement = customClass[i].getElementsByTagName("select")[0];
-        /* For each element, create a new DIV that will act as the selected item: */
-        let newSelectedItem = document.createElement("DIV");
-        newSelectedItem.setAttribute("class", "select-selected");
-        newSelectedItem.innerHTML = foundSelectElement.options[foundSelectElement.selectedIndex].innerHTML;
-        customClass[i].appendChild(newSelectedItem);
-        /* For each element, create a new DIV that will contain the option list: */
-        let newOptionContainer = document.createElement("DIV");
-        newOptionContainer.setAttribute("class", "select-items select-hide");
-        for (let j = 1; j <foundSelectElement.length; j++) {
-            /* For each option in the original select element,
-            create a new DIV that will act as an option item: */
-            newOptionItem = document.createElement("DIV");
-            newOptionItem.innerHTML = foundSelectElement.options[j].innerHTML;
-            newOptionItem.addEventListener("click", function(e) {
-                /* When an item is clicked, update the original select box,
-                and the selected item: */
-                var y, i, k, s, h, sl, yl;
-                selectElement = this.parentNode.parentNode.getElementsByTagName("select")[0];
-                selectedItem = this.parentNode.previousSibling;
-                for (i = 0; i < selectElement.length; i++) {
-                    if (selectElement.options[i].innerHTML == this.innerHTML) {
-                        selectElement.selectedIndex = i;
-                        selectedItem.innerHTML = this.innerHTML;
-                        y = this.parentNode.getElementsByClassName("same-as-selected");
-                        yl = y.length;
-                        for (k = 0; k < yl; k++) {
-                            y[k].removeAttribute("class");
-                        }
-                        this.setAttribute("class", "same-as-selected");
-                        break;
-                    }
-                }
-                selectedItem.click();
-            });
-            newOptionContainer.appendChild(newOptionItem);
-        }
-        customClass[i].appendChild(newOptionContainer);
-        newSelectedItem.addEventListener("click", function(e) {
-            /* When the select box is clicked, close any other select boxes,
-            and open/close the current select box: */
-            e.stopPropagation();
-            closeAllSelect(this);
-            this.nextSibling.classList.toggle("select-hide");
-            this.classList.toggle("select-arrow-active");
-        });
-    }
-}
-
-function closeAllSelect(elmnt) {
-    /* A function that will close all select boxes in the document,
-    except the current select box: */
-    var x, y, i, xl, yl, arrNo = [];
-    x = document.getElementsByClassName("select-items");
-    y = document.getElementsByClassName("select-selected");
-    xl = x.length;
-    yl = y.length;
-    for (i = 0; i < yl; i++) {
-        if (elmnt == y[i]) {
-            arrNo.push(i)
-        } else {
-            y[i].classList.remove("select-arrow-active");
-        }
-    }
-    for (i = 0; i < xl; i++) {
-        if (arrNo.indexOf(i)) {
-            x[i].classList.add("select-hide");
-        }
-    }
-}
-
-/* If the user clicks anywhere outside the select box,
-then close all select boxes: */
-document.addEventListener("click", closeAllSelect);
 
 
 let newItem = new Item('Test Trading Card', 'TCG', 'Test Card Game', 1999, false, 'Pictures/image_placeholder.png', true)
