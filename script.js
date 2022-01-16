@@ -216,7 +216,7 @@ Button.prototype.stateReset = function() {
     this.filterType = this.originalState[4];
     this.className = this.originalState[5];
     this.idName = this.originalState[6];
-    this.initCount = true;
+    this.initStatus = true;
     this.state = this.originalState[7];
 };
 
@@ -325,6 +325,8 @@ Form.prototype.init = function (){
                         imgURL.value,
                         true);
                     newItem.init();
+                    document.body.removeChild(this.css);
+                    document.getElementById('overlay').classList.remove('active');
                     },
                 }
             ]
