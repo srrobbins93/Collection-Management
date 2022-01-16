@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection Management</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div id="banner">
+        <div id="logo">Collection Manager</div>
+    </div>
+    <div id="mainContainer">
+        <div id="topContainer">
+            <div id="searchAndFilter">
+                <div id="search">
+                    <input name="search" type="text"></input>
+                    <button id="searchSubmit">Search</button>
+                    <img src="Pictures/grey_icon.png" id="filterImgG">
+                    <img src="Pictures/color_icon.png" id="filterImgB">
+                    <div id="addContainer">
+                        <button id="add">+</button>
+                    </div>
+                </div>
+                <div id="options">
+                    <button id="addNewItem" class="addButton">New Item</button>
+                    <button id="addCategory" class="addButton">New Category</button>
+                    <button id="addBrand" class="addButton">New Brand</button>
+                </div>
+            </div>
+        </div>
+        <div id="scroll">
+            <button id="leftScroll"><</button>
+            <button id="rightScroll">></button>
+        </div>
+        <div id="middleContainer">
+            <div id="emptyMessage">Empty Collection :'(</div>
+        </div>
+    </div>
+    <div id="overlay"></div>
+    </body>

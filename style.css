@@ -1,0 +1,474 @@
+body {
+    background-color: #fafafa;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body, #topContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    height: 75px;
+    width: 100%;
+    box-shadow: 0px 2px 10px 1px lightgray;
+}
+
+#logo {
+    font-size: 42px;
+    text-shadow: 0px 2px 10px  lightgray;
+    color: #33a1fd;
+}
+
+#searchAndFilter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-right: 25px;
+    width: 1000px;
+    min-height: 160px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px 1px lightgray;
+    background-color: white;
+
+}
+
+#search {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    gap: 5px;
+}
+
+#search input, #popUpBody input {
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 22px
+}
+
+#searchSubmit, #addButton  {
+    width: 100px;
+    height: 55px;
+    border-radius: 10px;
+    font-size: 22px;
+    color: white;
+    background-color:#33a1fd;
+    border: 1px solid lightgray;
+    box-shadow: 0px 2px 10px 1px lightgray;
+}
+
+#searchSubmit:hover, #addButton:hover {
+    transition: all .2s ease-in-out;
+    box-shadow: 0px 5px 15px 5px lightgray;
+}
+
+#filterImgG, #filterImgB {
+    height: 35px;
+    width: 35px;
+    align-self: center;
+}
+
+#filterImgB { display: none;}
+
+#addContainer {
+    display: flex;
+}
+
+#options {
+    display: flex;
+    margin-left: 800px;
+    flex-direction: column;
+    gap: 25px;
+    z-index: 1;
+}
+
+.addButton {
+    height: 35px;
+    font-weight: bold;
+    color: white;
+    background-color:#33a1fd;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px 1px lightgray;
+
+}
+
+.addButton:hover {
+    transition: all .2s ease-in-out;
+    transform: scale(1.1);
+}
+
+#scroll {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 50px;
+}
+
+#leftScroll, #rightScroll {
+    font-size:21px;
+    width: 40px;
+    height: 40px;
+    font-weight: bold;
+    color: white;
+    background-color:#33a1fd;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px 1px lightgray;
+}
+
+#leftScroll:hover, #rightScroll:hover {
+    transition: all .2s ease-in-out;
+    transform: scale(1.1);
+}
+
+#filter {
+    display: flex;
+    font-size: 18px;
+    margin-top: 15px;
+    padding: 5px;
+    gap: 5px;
+    width: 990px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px 1px lightgray;
+    background-color: white;
+
+}
+
+#leftFilterContainer, #rightFilterContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+#leftFilterContainer {
+    flex-wrap: wrap;
+    width: 495px;
+}
+
+#rightFilterContainer {
+    width: 495px;
+    align-items: flex-end;
+}
+
+.additionalFilterItems {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 15px;
+    gap: 10px;
+}
+
+#brand {
+    margin-left: 45px;
+}
+
+/* The container must be positioned relative: */
+.custom-select {
+    position: relative;
+    margin-left: 25px;
+}
+
+.custom-select select {
+    display: none; /*hide original SELECT element: */
+}
+
+.select-selected {
+    background-color: #33a1fd;
+}
+
+  /* Style the arrow inside the select element: */
+.select-selected:after {
+    position: absolute;
+    content: "";
+    top: 14px;
+    right: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+  select-selected.select-arrow-active:after {
+    border-color: transparent transparent #fff transparent;
+    top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,.select-selected {
+    color: #ffffff;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+    position: absolute;
+    background-color: #33a1fd;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+    display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.filterButton {
+    width: auto;
+    min-width: 100px;
+    max-width: 150px;
+    height: 50px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    box-shadow: 0px 2px 10px 1px lightgray;
+}
+
+
+#middleContainer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    width: 1000px;
+    height: auto;
+    background-color: transparent;
+
+}
+
+#emptyMessage {display: none;}
+
+#emptyMessage.active {
+    display: flex;
+    color: #33a1fd;
+    font-weight: bold;
+    font-size: 36px;
+    text-shadow: 0px 2px 5px  lightgray;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px;
+    padding: 10px;
+    width: 275px;
+    height: 400px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px 1px lightgray;
+    transition: 200ms ease-in-out;
+}
+
+#cardImage {
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+}
+
+.card img {
+    width: 200px;
+    height: 200px;
+}
+
+.card:hover {
+    transition: all .2s ease-in-out;
+    transform: scale(1.1);
+}
+
+#cardName {
+    display: inline-flex;
+    max-width: 200px;
+    min-width: 250px;
+
+}
+
+#modifyContainer {
+    display: flex;
+    justify-content: flex-end;
+    background-color: transparent;
+
+
+}
+
+#cardContent {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+
+.cardText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    width: auto;
+    height: 20px;
+    background-color: #33a1fd;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 2px 10px 1px lightgray;
+}
+
+#deleteButton {
+    color: red;
+    background-color:white;
+    border: 1px solid lightgray;
+}
+
+#deleteButton:hover {
+    color: white;
+    background-color:red;
+    border: 1px solid lightgray;
+}
+
+#editButton {
+    color: #33a1fd;
+    background-color:white;
+    border: 1px solid lightgray;
+}
+
+#editButton:hover {
+    color: white;
+    background-color:#33a1fd;
+    border: 1px solid lightgray;
+}
+
+.text {
+font-size: 16px;
+}
+
+#rightContainer {
+    margin-top: 150px;
+    width: auto;
+    height: 750px;
+}
+
+#add {
+    margin-top: 7px;
+    margin-left: 10px;
+    margin-right: 0px;
+    padding-bottom: 25px;
+    border-radius: 50px;
+    height: 45px;
+    width: 45px;
+    position: absolute;
+    font-family: verdana;
+    font-size: 30px;
+    text-align: center;
+    color: white;
+    background-color:#33a1fd;
+    border: 1px solid lightgray;
+    box-shadow: 0px 2px 10px 1px lightgray;
+}
+
+#add:hover {
+    transition: all .2s ease-in-out;
+    transform: scale(1.1);
+}
+
+
+#itemPopUp, #categoryPopUp, #brandPopUp, #deletePopUp {
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+    width: 500px;
+    max-width: 80%;
+
+}
+
+#itemPopUp.active, #categoryPopUp.active, #brandPopUp.active, #deletePopUp.active {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#popUpHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 15px;
+}
+
+#popUpTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.closeButton {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background:none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#popUpBody {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 15px;
+    gap: 15px;
+    font-size: 20px;
+}
+
+#addButton {
+    align-self: flex-end;
+}
+
+#categoryPopUp #addButton, #brandPopUp #addButton {
+    align-self: center;
+}
+
+
+#deletePopUp #selectionContainer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+#overlay {
+    position: fixed;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
