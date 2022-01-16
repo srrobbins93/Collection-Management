@@ -21,14 +21,6 @@ let categoryArray = [
 
 let yearArray = [];
 
-let filterButton = new Button('New', document.createElement("button"), '#33a1fd', 'white', 'childFilter', 'filterButton', false, false);
-let ownershipTag;
-let buttonObjects = [];
-let additionalButtons = [];
-buttonObjects.push(new Button('Test Category 1', document.createElement("button"), '#33a1fd', 'white', 'category', 'filterButton', 'categoryFilter', false, false));
-buttonObjects.push(new Button('Test Brand 1', document.createElement("button"), '#33a1fd', 'white', 'brand', 'filterButton', 'yearFilter', false, false));
-buttonObjects.push(new Button('Test Brand 2', document.createElement("button"), '#33a1fd', 'white', 'brand', 'filterButton', 'collectionFilter', false, false));
-
 document.getElementById('options').style.display = 'none'
 document.getElementById('add').addEventListener('click', () => showAndHide('options'));
 document.getElementById('addNewItem').addEventListener('click', () => showAndHide('options'));
@@ -133,14 +125,20 @@ Item.prototype.createCard = function () {
     image.src= this.cardImage;
     cardImageContainer.appendChild(image);
     let ownershipTag = document.createElement('div');
-    ownershipTag.setAttribute('id', 'ownershipTag');
+    ownershipTag.setAttribute('id', `ownershipTagFor${this.name}`);
     this.css.appendChild(ownershipTag);
-    if (this.owned === true) {
-        let collectionButton = new CollectionButton('Collected', document.createElement("button"), 'white', '#67cf67', 'collection', 'collectionButton', 'collectionButton', false, false)
+    if (this.owned === 'true') {
+        let collectionButton = new CollectionButton('Collected', document.createElement("button"), 'white', '#67cf67', 'collection', 'collectionButton', 'collectionButton', 'true', true)
         collectionButton.init();
-    } else if (this.owned === false) {
-        let collectionButton = new CollectionButton('Not Collected', document.createElement("button"), 'black', '#fafafa', 'collection', 'collectionButton', 'collectionButton', false, false)
+        console.log(this.owned)
+        console.log(collectionButton.css);
+        document.getElementById(`ownershipTagFor${this.name}`).appendChild(collectionButton.css);
+    } else if (this.owned === 'false') {
+        let collectionButton = new CollectionButton('Not Collected', document.createElement("button"), 'black', '#fafafa', 'collection', 'collectionButton', 'collectionButton', 'false', false);
         collectionButton.init();
+        console.log(this.owned)
+        console.log(collectionButton.css);
+        document.getElementById(`ownershipTagFor${this.name}`).appendChild(collectionButton.css);
     }
     let cardContent = document.createElement('div');
     cardContent.setAttribute('id', 'cardContent');
@@ -156,6 +154,7 @@ Item.prototype.createCard = function () {
     brandCardText.innerHTML = this.brand;
     cardContent.appendChild(brandCardText);
 }
+
 
 Item.prototype.init = function () {
     collection.push(this);
@@ -233,35 +232,37 @@ CollectionButton.prototype.init = function() {
     this.css.style.borderRadius = '10px';
     this.css.style.padding = '10px';
     this.css.style.boxShadow = '0px 2px 10px 1px lightgray';
-
-    if (this.initStatus === false) {
-        this.css.addEventListener('mouseleave', () => {
-            if (this.state === false) {
-                this.css.style.backgroundColor = this.color;
-                this.css.style.color = this.fontColor;
-            }
-        });
-        this.css.addEventListener('mouseenter', () => {
-            if (this.state === false) {
-                this.css.style.backgroundColor = '#67cf67';
-                this.css.style.color = this.color;
-            }
-        });
-        this.css.addEventListener('click', () => {
-            if (this.state === false) {
-                this.css.style.backgroundColor = '#67cf67';
-                this.css.style.color = '#fafafa';
-                this.css.innerHTML = 'Collected';
-                this.state = true;
-            } else if(this.state = true) {
-                this.stateReset();
-                this.css.innerHTML = this.name;
-
-            }
-        });
-        this.initStatus = true;
-        document.getElementById('ownershipTag').appendChild(this.css);
-    };
+    this.css.addEventListener('mouseleave', () => {
+        if (this.state === false) {
+            this.css.style.backgroundColor = '#fafafa';
+            this.css.style.color = 'black';
+        } else if (this.state === true) {
+            this.css.style.backgroundColor = '#67cf67';
+            this.css.style.color = 'white';
+        }
+    });
+    this.css.addEventListener('mouseenter', () => {
+        if (this.state === false) {
+            this.css.style.backgroundColor = '#67cf67';
+            this.css.style.color = 'white';
+        } else if (this.state === true) {
+            this.css.style.backgroundColor = '#fafafa';
+            this.css.style.color = 'black';
+        }
+    });
+    this.css.addEventListener('click', () => {
+        if (this.state === false) {
+            this.css.style.backgroundColor = '#67cf67';
+            this.css.style.color = '#fafafa';
+            this.css.innerHTML = 'Collected';
+            this.state = true;
+        } else if(this.state === true) {
+            this.css.style.backgroundColor = '#fafafa';
+            this.css.style.color = 'black';
+            this.css.innerHTML = 'Not Collected';
+            this.state = false;
+        }
+    });
 }
 
 
@@ -312,7 +313,7 @@ Form.prototype.init = function (){
         //Collection Status Drop Down
         newElement('div', false, null, document.getElementById('popUpBody'), 'Collected:');
         newSelectBox('custom-select', 'width:200px;', 'Collected', 'collectedSelect', document.getElementById('popUpBody'),
-        [{optionValue:'null', optionText:'----'}, {optionValue:'null', optionText:'Yes'}, {optionValue:'null', optionText:'No'}])
+        [{optionValue:'null', optionText:'----'}, {optionValue:Boolean(true), optionText:'Yes'}, {optionValue:Boolean(false), optionText:'No'}])
         newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add',
             [
                 {type:'click', function: () => {
@@ -325,6 +326,7 @@ Form.prototype.init = function (){
                         imgURL.value,
                         true);
                     newItem.init();
+                    console.log(newItem);
                     document.body.removeChild(this.css);
                     document.getElementById('overlay').classList.remove('active');
                     },
