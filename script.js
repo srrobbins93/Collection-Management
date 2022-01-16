@@ -2,6 +2,27 @@
 /* ------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------*/
 let collection = [];
+let brandArray = [
+    {optionValue:'null', optionText:'----'},
+    {optionValue:'Pokemon', optionText:'Pokemon'},
+    {optionValue:'MTG', optionText:'MTG'},
+    {optionValue:'MLB', optionText:'MLB'}
+            ];
+let categoryArray = [
+    {optionValue:'null', optionText:'----'},
+    {optionValue:'TCG', optionText:'TCG'},
+    {optionValue:'Comic Books', optionText:'Comic Books'},
+    {optionValue:'Shoes', optionText:'Shoes'},
+    {optionValue:'Stamps', optionText:'Stamps'},
+    {optionValue:'Coins', optionText:'Coins'},
+    {optionValue:'Books', optionText:'Books'},
+    {optionValue:'Sports Cards', optionText:'Sports Cards'},
+];
+
+let yearArray = [];
+
+
+['TCG', 'Shoes', "Baseball Cards"];
 let filterButton = new Button('New', document.createElement("button"), '#33a1fd', 'white', 'childFilter', 'filterButton', false, false);
 let ownershipTag;
 let buttonObjects = [];
@@ -23,7 +44,7 @@ document.getElementById('addNewItem').addEventListener('click', () => {
     if (document.getElementById('filter')) {
         filterMenu('disable');
     }
-    let itemForm = new Form('itemPopUp', document.createElement('div'), [], 'itemPopUp', false);
+    let itemForm = new Form('itemPopUp', document.createElement('div'), {}, 'itemPopUp', false);
     itemForm.init();
 })
 
@@ -32,7 +53,7 @@ document.getElementById('addCategory').addEventListener('click', () => {
     if (document.getElementById('filter')) {
         filterMenu('disable');
     }
-    let categoryPopUp = new Form('categoryPopUp', document.createElement('div'), [], 'categoryPopUp', false);
+    let categoryPopUp = new Form('categoryPopUp', document.createElement('div'), {}, 'categoryPopUp', false);
     categoryPopUp.init()
 })
 
@@ -41,8 +62,8 @@ document.getElementById('addBrand').addEventListener('click', () => {
     if (document.getElementById('filter')) {
         filterMenu('disable');
     }
-    let brandPopUp = new Form('brandPopUp', document.createElement('div'), [], 'brandPopUp', false);
-    categoryPopUp.init()
+    let brandPopUp = new Form('brandPopUp', document.createElement('div'), {}, 'brandPopUp', false);
+    brandPopUp.init()
 })
 
 
@@ -298,18 +319,31 @@ Form.prototype.init = function (){
         document.getElementById('popUpBody').appendChild(year);
         //Cateogry Drop down
         newElement('div', false, null, document.getElementById('popUpBody'), 'Category:', null);
-        newSelectBox('custom-select', 'width:200px;', 'Category', 'categorySelect', document.getElementById('popUpBody'),
-        [{optionValue:'null', optionText:'----'}])
+        newSelectBox('custom-select', 'width:200px;', 'Category', 'categorySelect', document.getElementById('popUpBody'), categoryArray);
         //Brand Drop down
         newElement('div', false, null, document.getElementById('popUpBody'), 'Brand:');
-        newSelectBox('custom-select', 'width:200px;', 'Category', 'categorySelect', document.getElementById('popUpBody'),
-        [{optionValue:'null', optionText:'----'}])
+        newSelectBox('custom-select', 'width:200px;', 'Brand', 'brandSelect', document.getElementById('popUpBody'), brandArray);
         //Collection Status Drop Down
         newElement('div', false, null, document.getElementById('popUpBody'), 'Collected:');
-        newSelectBox('custom-select', 'width:200px;', 'Category', 'categorySelect', document.getElementById('popUpBody'),
+        newSelectBox('custom-select', 'width:200px;', 'Collected', 'collectedSelect', document.getElementById('popUpBody'),
         [{optionValue:'null', optionText:'----'}, {optionValue:'null', optionText:'Yes'}, {optionValue:'null', optionText:'No'}])
-        newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add');
         applySelectorStyle();
+        newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add',
+            [
+                {type:'click', function: () => {
+                    let newItem = new Item(
+                        nameText.value,
+                        document.getElementById('categorySelect').value,
+                        document.getElementById('brandSelect').value,
+                        year.value,
+                        document.getElementById('collectedSelect').value,
+                        imgURL.value,
+                        true);
+                    newItem.init();
+                    },
+                }
+            ]
+        );
         //Instantiates the form for a new category.
     } else if (this.type === 'categoryPopUp') {
         newElement('div','id', 'popUpHeader', this.css);
@@ -365,7 +399,6 @@ function showAndHide(elementId) {
 
 function updateContainer(array) {
     let container = document.getElementById("middleContainer");
-    let children = container.childNodes;
     for (i = 0; i < array.length; i++) {
         if (collection[i].inContainer === true) {
             continue
@@ -410,28 +443,25 @@ function filterMenu (option) {
     //Categories
     newElement('div', 'id', 'category', document.getElementById('leftFilterContainer'), 'Category:', null);
     document.getElementById('category').setAttribute('class', 'additionalFilterItems');
-    newSelectBox('custom-select', 'width:200px;', 'Category', 'category', document.getElementById('category'),
-    [{optionValue:'null', optionText:'----'}])
+    newSelectBox('custom-select', 'width:200px;', 'Category', 'category', document.getElementById('category'), categoryArray);
     //Brands
     newElement('div', 'id', 'brand', document.getElementById('leftFilterContainer'), 'Brand:', null);
     document.getElementById('brand').setAttribute('class', 'additionalFilterItems');
-    newSelectBox('custom-select', 'width:200px;', 'Brand', 'brand', document.getElementById('brand'),
-    [{optionValue:'null', optionText:'----'}])
+    newSelectBox('custom-select', 'width:200px;', 'Brand', 'brand', document.getElementById('brand'), brandArray);
     //Right filter Container
     newElement('div','id', 'rightFilterContainer', document.getElementById('filter'), false);
     //Year Select
     newElement('div', 'id', 'year', document.getElementById('rightFilterContainer'), 'Year:', null);
     document.getElementById('year').setAttribute('class', 'additionalFilterItems');
-    newSelectBox('custom-select', 'width:200px;', 'Year', 'years', document.getElementById('year'),
-    [{optionValue:'null', optionText:'----'}])
+    newSelectBox('custom-select', 'width:200px;', 'Year', 'years', document.getElementById('year'), yearArray);
     //Collection Status Select
     newElement('div', 'id', 'collectionStatus', document.getElementById('rightFilterContainer'), 'Collected:', null);
     document.getElementById('collectionStatus').setAttribute('class', 'additionalFilterItems');
-    newSelectBox('custom-select', 'width:200px;', 'Year', 'years', document.getElementById('collectionStatus'),
-    [{optionValue:'null', optionText:'----'}])
+    newSelectBox('custom-select', 'width:200px;', 'Collected', 'collected', document.getElementById('collectionStatus'),
+    [{optionValue:'null', optionText:'----'}, {optionValue:'Yes', optionText:'Yes'}, {optionValue:'No', optionText:'No'}])
     document.getElementById('filterImgG').style.display = 'none';
     document.getElementById('filterImgB').style.display = 'flex';
-        applySelectorStyle()
+    applySelectorStyle()
     } else if (option === 'disable') {
 
         document.getElementById('mainContainer').removeChild(document.getElementById('filter'));
@@ -469,7 +499,6 @@ function newSelectBox (classNameDiv, divStyle, selectName, selectId, target, opt
     let select = document.createElement('select')
     select.name = selectName;
     select.id = selectId;
-    console.log(select);
     category.appendChild(select);
     newOption(optionArray, select);
 }
@@ -518,14 +547,11 @@ function applySelectorStyle() {
                 var y, i, k, s, h, sl, yl;
                 selectElement = this.parentNode.parentNode.getElementsByTagName("select")[0];
                 selectedItem = this.parentNode.previousSibling;
-                console.log(selectedItem);
-                console.log(selectedItem.parentNode);
                 for (i = 0; i < selectElement.length; i++) {
                     if (selectElement.options[i].innerHTML == this.innerHTML) {
                         selectElement.selectedIndex = i;
                         selectedItem.innerHTML = this.innerHTML;
                         y = this.parentNode.getElementsByClassName("same-as-selected");
-                        console.log(y)
                         yl = y.length;
                         for (k = 0; k < yl; k++) {
                             y[k].removeAttribute("class");
@@ -580,5 +606,3 @@ document.addEventListener("click", closeAllSelect);
 let newItem = new Item('Test Trading Card', 'TCG', 'Test Card Game', 1999, false, 'Pictures/image_placeholder.png', true)
 
 newItem.init();
-
-console.log(collection);
