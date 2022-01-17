@@ -59,6 +59,7 @@ function Item (name, category, brand, year, owned, cardImage, inContainer) {
     this.owned = owned;
     this.cardImage = cardImage;
     this.inContainer = inContainer;
+    this.id = createId();
 };
 
 function Button (name, css, fontColor, color, filterType, className, idName, initStatus, state) {
@@ -129,15 +130,11 @@ Item.prototype.createCard = function () {
     this.css.appendChild(ownershipTag);
     if (this.owned === 'true') {
         let collectionButton = new CollectionButton('Collected', document.createElement("button"), 'white', '#67cf67', 'collection', 'collectionButton', 'collectionButton', 'true', true)
-        collectionButton.init();
-        console.log(this.owned)
-        console.log(collectionButton.css);
+        collectionButton.init(this.id);
         document.getElementById(`ownershipTagFor${this.name}`).appendChild(collectionButton.css);
     } else if (this.owned === 'false') {
         let collectionButton = new CollectionButton('Not Collected', document.createElement("button"), 'black', '#fafafa', 'collection', 'collectionButton', 'collectionButton', 'false', false);
-        collectionButton.init();
-        console.log(this.owned)
-        console.log(collectionButton.css);
+        collectionButton.init(this.id);
         document.getElementById(`ownershipTagFor${this.name}`).appendChild(collectionButton.css);
     }
     let cardContent = document.createElement('div');
@@ -219,11 +216,12 @@ Button.prototype.stateReset = function() {
     this.state = this.originalState[7];
 };
 
-CollectionButton.prototype.init = function() {
+CollectionButton.prototype.init = function(id) {
     this.css.style.backgroundColor = this.color;
     this.css.style.color = this.fontColor;
     this.css.innerHTML = this.name;
     this.css.className = this.className;
+    this.id = id;
     this.css.style.width = '200px';
     this.css.style.height = 'auto';
     this.css.style.fontSize = '16px';
@@ -255,11 +253,23 @@ CollectionButton.prototype.init = function() {
             this.css.style.backgroundColor = '#67cf67';
             this.css.style.color = '#fafafa';
             this.css.innerHTML = 'Collected';
+            for (item of collection) {
+                if (item.id === this.id) {
+                    item.owned = 'true';
+                };
+                continue;
+            }
             this.state = true;
         } else if(this.state === true) {
             this.css.style.backgroundColor = '#fafafa';
             this.css.style.color = 'black';
             this.css.innerHTML = 'Not Collected';
+            for (item of collection) {
+                if (item.id === this.id) {
+                    item.owned = 'false';
+                };
+                continue;
+            }
             this.state = false;
         }
     });
@@ -326,7 +336,6 @@ Form.prototype.init = function (){
                         imgURL.value,
                         true);
                     newItem.init();
-                    console.log(newItem);
                     document.body.removeChild(this.css);
                     document.getElementById('overlay').classList.remove('active');
                     },
@@ -508,6 +517,22 @@ function newOption (options, target) {
         option.innerHTML = op.optionText;
         target.appendChild(option);
     }
+}
+
+function createId () {
+    if (collection.length < 1) {
+        return 1;
+    }
+    let sortedCollection = collection.slice(0);
+    sortedCollection.sort((a,b) => {
+        if (a.id > b.id) {
+            return -1;
+        } else if (a.id < b.id) {
+            return 1;
+        };
+    })
+    let highestId = sortedCollection[0].id;
+    return highestId + 1;
 }
 
 
