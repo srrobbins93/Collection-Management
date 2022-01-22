@@ -2,11 +2,17 @@
 /* ------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------*/
 let collection = [];
+let categorySelector = document.getElementById('selectCategory');
+let brandSelector = document.getElementById('selectBrand');
+let yearSelector = document.getElementById('selectYear');
+let collectionSelector = document.getElementById('selectCollection');
+
 let brandArray = [
     {optionValue:'null', optionText:'----'},
     {optionValue:'Pokemon', optionText:'Pokemon'},
     {optionValue:'MTG', optionText:'MTG'},
-    {optionValue:'MLB', optionText:'MLB'}
+    {optionValue:'MLB', optionText:'MLB'},
+    {optionValue:'Nike', optionText:'Nike'}
             ];
 let categoryArray = [
     {optionValue:'null', optionText:'----'},
@@ -19,7 +25,8 @@ let categoryArray = [
     {optionValue:'Sports Cards', optionText:'Sports Cards'},
 ];
 
-let yearArray = [];
+let yearArray = [
+    {optionValue:'null', optionText:'----'},];
 
 document.getElementById('options').style.display = 'none'
 document.getElementById('add').addEventListener('click', () => showAndHide('options'));
@@ -44,13 +51,12 @@ document.getElementById('addBrand').addEventListener('click', () => {
     brandPopUp.init()
 })
 
-
 /* ------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------*/
 // Required object constructors:
 /* ------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------*/
-function Item (name, category, brand, year, owned, cardImage, inContainer) {
+function Item (name, category, brand, year, owned, cardImage, inContainer, id=createId()) {
     this.name = name;
     this.css = document.createElement('div');
     this.category = category;
@@ -59,7 +65,8 @@ function Item (name, category, brand, year, owned, cardImage, inContainer) {
     this.owned = owned;
     this.cardImage = cardImage;
     this.inContainer = inContainer;
-    this.id = createId();
+    this.id = id;
+    this.display = false;
 };
 
 function Button (name, css, fontColor, color, filterType, className, idName, initStatus, state) {
@@ -338,8 +345,10 @@ Form.prototype.init = function (){
                     newItem.init();
                     document.body.removeChild(this.css);
                     document.getElementById('overlay').classList.remove('active');
-                    },
+                    checkMiddleContainer();
+                    }
                 }
+
             ]
         );
         //Instantiates the form for a new category.
@@ -420,63 +429,6 @@ function updateContainer(array) {
     };
 }
 
-function filter (arg) {
-    if (arg === 'name') {
-        collection.sort(function (a,b) {
-            let nameA = a.name.toLowerCase();
-            let nameB = b.name.toLowerCase();
-            if (nameA < nameB) {
-                return -1;
-            } else if (nameA > nameB) {
-                return 1;
-            }
-        });
-    }
-}
-
-//  Note to self: May not need this function.
-function removeAllChildNodes(parent) {
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
-}
-
-function filterMenu (option) {
-    if (option === 'enable') {
-    let mainContainer = document.getElementById('mainContainer');
-    newElement('div','id', 'filter', mainContainer, false);
-    //Make sure that filter appears below topContainer:
-    mainContainer.insertBefore(document.getElementById('filter'), mainContainer.children[1]);
-    //Left filter container.
-    newElement('div','id', 'leftFilterContainer', document.getElementById('filter'), false);
-    //Categories
-    newElement('div', 'id', 'category', document.getElementById('leftFilterContainer'), 'Category:', null);
-    document.getElementById('category').setAttribute('class', 'additionalFilterItems');
-    newSelectBox('custom-select', 'width:200px;', 'Category', 'category', document.getElementById('category'), categoryArray);
-    //Brands
-    newElement('div', 'id', 'brand', document.getElementById('leftFilterContainer'), 'Brand:', null);
-    document.getElementById('brand').setAttribute('class', 'additionalFilterItems');
-    newSelectBox('custom-select', 'width:200px;', 'Brand', 'brand', document.getElementById('brand'), brandArray);
-    //Right filter Container
-    newElement('div','id', 'rightFilterContainer', document.getElementById('filter'), false);
-    //Year Select
-    newElement('div', 'id', 'year', document.getElementById('rightFilterContainer'), 'Year:', null);
-    document.getElementById('year').setAttribute('class', 'additionalFilterItems');
-    newSelectBox('custom-select', 'width:200px;', 'Year', 'years', document.getElementById('year'), yearArray);
-    //Collection Status Select
-    newElement('div', 'id', 'collectionStatus', document.getElementById('rightFilterContainer'), 'Collected:', null);
-    document.getElementById('collectionStatus').setAttribute('class', 'additionalFilterItems');
-    newSelectBox('custom-select', 'width:200px;', 'Collected', 'collected', document.getElementById('collectionStatus'),
-    [{optionValue:'null', optionText:'----'}, {optionValue:'Yes', optionText:'Yes'}, {optionValue:'No', optionText:'No'}])
-    document.getElementById('filterImgG').style.display = 'none';
-    document.getElementById('filterImgB').style.display = 'flex';
-    } else if (option === 'disable') {
-        document.getElementById('mainContainer').removeChild(document.getElementById('filter'));
-        document.getElementById('filterImgG').style.display = 'flex';
-        document.getElementById('filterImgB').style.display = 'none';
-    }
-}
-
 function newElement (elementType, selector, selectorName, target, content, eventListeners) {
     let element = document.createElement(elementType);
     if (selector === false) {
@@ -535,7 +487,203 @@ function createId () {
     return highestId + 1;
 }
 
+function checkMiddleContainer () {
+    for (item of collection) {
+        if (item.id >= 10) {
+            item.css.style.display = 'none';
+        }
+    }
 
-let newItem = new Item('Test Trading Card', 'TCG', 'Test Card Game', 1999, false, 'Pictures/image_placeholder.png', true)
+}
+
+/* ------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------*/
+// Filter Functions, Methods, and Objects:
+/* ------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------*/
+
+function finalFilter (filterState, array) {
+    let filterValues = Object.values(filterState);
+    let filterKeys = Object.keys(filterState);
+    let firstArray = [];
+    let selectedArray = [];
+    let nullCount = 0;
+    for (i = 0; i <=3; i++) {
+        if (filterValues[i] === 'null') {
+            nullCount += 1
+        }
+        if (filterValues[i] !== 'null') {
+            selectedArray.push(filterKeys[i]);
+        }
+    }
+    if (nullCount === 4) {return collection};
+    firstArray = array.filter((item) => {
+        if((item.category === filterValues[0] || filterValues[0] === 'null') &&
+        (item.brand === filterValues[1] || filterValues[1] === 'null') &&
+        (item.year === filterValues[2] || filterValues[2] === 'null') &&
+        (item.owned === filterValues[3] || filterValues[3] === 'null')) {
+            console.log('true');
+                return true;
+        }
+    });
+    return firstArray;
+}
+
+
+
+function getFilterState(category, brand, year, collection) {
+    let state = {'category':category.value, 'brand':brand.value, 'year':year.value, 'collection':collection.value};
+    console.log(state);
+    return state;
+}
+
+function CardContainer (min, max) {
+    this.min = min;
+    this.max = max;
+    this.display = this.displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection));
+}
+
+CardContainer.prototype.displayUpdate = function (array) {
+    //Sets newArray to contain objects with indexes between min and max.
+    let newArray = array.filter((item) => array.indexOf(item) <= this.max && array.indexOf(item) > this.min);
+    //Changes css display of each card div to none if collection id is not in newArray
+    let newArrayIds = newArray.map((item) => item.id);
+    console.log(`New Array: ${newArrayIds}`)
+    array.forEach((item) => {item.css.style.display = 'none'});
+    array.forEach((item) => {
+
+        //LEFT OFF HERE. Else if statement is not working.
+        if (newArrayIds.includes(item.id)) {
+            item.css.style.display = 'flex';
+        } else if (!newArrayIds.includes(item.id)) {
+            console.log(item);
+            item.css.style.display = 'none';
+            }
+    });
+    return newArray;
+}
+
+CardContainer.prototype.shift = function (direction) {
+    if (direction === 'right') {
+        if (this.display.length < 9) {
+            return
+        }
+        this.min += 9;
+        this.max += 9;
+        this.display = this.displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection));
+        if (this.display.length === 0) {
+            this.min -= 9;
+            this.max -= 9;
+            this.display = this.displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection));
+        }
+    }
+    if (direction === 'left') {
+        if (this.min === -1 && this.max === 8){
+            return;
+        }
+        this.min -= 9;
+        this.max -= 9;
+        if (this.display.length === 0) {
+            this.min += 9;
+            this.max += 9;
+        }
+        this.display = this.displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection));
+    }
+}
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+function getValues (array) {
+    let arrayValues = [];
+    for (item of array) {
+        let itemValues = Object.values(item);
+        itemValues.splice(0,1);
+        itemValues.splice(4,1);
+        arrayValues.push(itemValues);
+    }
+    return arrayValues;
+}
+
+function displayOutput (collection) {
+    let container = document.getElementById('middleContainer');
+    let childNodes = container.children
+    for (item of childNodes){
+        item.style.display = 'none';
+    };
+}
+
+function filterMenu (option) {
+    if (option === 'enable') {
+    let mainContainer = document.getElementById('mainContainer');
+    newElement('div','id', 'filter', mainContainer, false);
+    //Make sure that filter appears below topContainer:
+    mainContainer.insertBefore(document.getElementById('filter'), mainContainer.children[1]);
+    //Left filter container.
+    newElement('div','id', 'leftFilterContainer', document.getElementById('filter'), false);
+    //Categories
+    newElement('div', 'id', 'category', document.getElementById('leftFilterContainer'), 'Category:', null);
+    document.getElementById('category').setAttribute('class', 'additionalFilterItems');
+    newSelectBox('custom-select', 'width:200px;', 'Category', 'selectCategory', document.getElementById('category'), categoryArray);
+    //Brands
+    newElement('div', 'id', 'brand', document.getElementById('leftFilterContainer'), 'Brand:', null);
+    document.getElementById('brand').setAttribute('class', 'additionalFilterItems');
+    newSelectBox('custom-select', 'width:200px;', 'Brand', 'selectBrand', document.getElementById('brand'), brandArray);
+    //Right filter Container
+    newElement('div','id', 'rightFilterContainer', document.getElementById('filter'), false);
+    //Year Select
+    newElement('div', 'id', 'year', document.getElementById('rightFilterContainer'), 'Year:', null);
+    document.getElementById('year').setAttribute('class', 'additionalFilterItems');
+    newSelectBox('custom-select', 'width:200px;', 'Year', 'selectYear', document.getElementById('year'), yearArray);
+    //Collection Status Select
+    newElement('div', 'id', 'collectionStatus', document.getElementById('rightFilterContainer'), 'Collected:', null);
+    document.getElementById('collectionStatus').setAttribute('class', 'additionalFilterItems');
+    newSelectBox('custom-select', 'width:200px;', 'Collected', 'selectCollection', document.getElementById('collectionStatus'),
+    [{optionValue:'null', optionText:'----'}, {optionValue:'Yes', optionText:'Yes'}, {optionValue:'No', optionText:'No'}])
+    document.getElementById('filterImgG').style.display = 'none';
+    document.getElementById('filterImgB').style.display = 'flex';
+    let newContainer = new CardContainer(-1, 8);
+    document.getElementById('selectCategory').addEventListener('change', () => newContainer.displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection)));
+    document.getElementById('selectBrand').addEventListener('change', () => newContainer.displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection)));
+    document.getElementById('selectYear').addEventListener('change', () => newContainer.displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection)));
+    document.getElementById('selectCollection').addEventListener('change', () => newContainer.displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection)));
+
+    } else if (option === 'disable') {
+        document.getElementById('mainContainer').removeChild(document.getElementById('filter'));
+        document.getElementById('filterImgG').style.display = 'flex';
+        document.getElementById('filterImgB').style.display = 'none';
+    }
+}
+
+/* ------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------*/
+// Misc:
+/* ------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------*/
+
+
+
+let newItem = new Item('Test Trading Card1', 'TCG', 'Pokemon', 1999, false, 'Pictures/image_placeholder.png', true, id = 1)
+let newItem2 = new Item('Test Shoe1', 'Shoes', 'Nike', 2004, false, 'Pictures/image_placeholder.png', true, id = 2)
+let newItem3 = new Item('Test Sports Card1', 'Sports Cards', 'MLB', 1980, false, 'Pictures/image_placeholder.png', true, id = 3)
+let newItem4 = new Item('Test Comic Book1', 'Comic Books', 'Marvel', 1960, false, 'Pictures/image_placeholder.png', true, id = 4)
+let newItem5 = new Item('Test Comic Book2', 'Comic Books', 'Marvel', 1960, false, 'Pictures/image_placeholder.png', true, id = 5)
+let newItem6 = new Item('Test Trading Card2', 'TCG', 'Pokemon', 1999, false, 'Pictures/image_placeholder.png', true, id = 6)
+let newItem7 = new Item('Test Trading Card3', 'TCG', 'Pokemon', 1999, false, 'Pictures/image_placeholder.png', true, id = 7)
+let newItem8 = new Item('Test Shoe2', 'Shoes', 'Nike', 2004, false, 'Pictures/image_placeholder.png', true, id = 8)
+let newItem9 = new Item('Test Shoe3', 'Shoes', 'Nike', 2004, false, 'Pictures/image_placeholder.png', true, id = 9)
+let newItem10 = new Item('Test Shoe4', 'Shoes', 'Nike', 2004, false, 'Pictures/image_placeholder.png', true, id = 10)
 
 newItem.init();
+newItem2.init();
+newItem3.init();
+newItem4.init();
+newItem5.init();
+newItem6.init();
+newItem7.init();
+newItem8.init();
+newItem9.init();
+newItem10.init();
