@@ -352,6 +352,10 @@ let yearArray = [
                     imgURL.value,
                     true);
                     newItem.init();
+                    let yearValue = document.getElementById('yearText').value
+                    yearArray.push({optionValue:String(yearValue), optionText:String(yearValue)});
+                    console.log(yearArray)
+                    updateOptions('year');
                     document.body.removeChild(this.css);
                     document.getElementById('overlay').classList.remove('active');
                     checkMiddleContainer();
@@ -361,7 +365,7 @@ let yearArray = [
 
         ]
         );
-        //Instantiates the form for a new category.
+    //Instantiates the form for a new category.
     } else if (this.type === 'categoryPopUp') {
         newElement('div','id', 'popUpHeader', this.css);
         newElement('div','id', 'popUpTitle', document.getElementById('popUpHeader'), 'New Category');
@@ -572,14 +576,13 @@ function getFilterState(category, brand, year, collection) {
 
 /*
 Current Structure:
-(1) Filter state is obtained using getFilterState(). Not dependent on container intantiation. Keep.
-(2) If filter button is clicked, the filter state is passed to finalFilter() along with the collection to
-filter the collection array based on the filterState and return a new array that will be past to displayUpdate().
-finalFilter is not dependent on container instantiation. Keep.
+(1) Filter state is obtained using getFilterState(). This represents the state of the filter selectors so that it can be used
+    to filter the collection array.
+(2) If filter button is clicked, the filter state is passed to finalFilter()[! Fix function name for readability]
+    along with the collection to filter the collection array based on the filterState and return a new array that
+    will be past to displayUpdate().
 (3) The new array from finalFilter is passed to displayUpdate and is filtered so that only 9 cards are displayed at a time
-based on 9 items in the array being present in the return array at any given time. This IS dependent on containter
-instantiation. Change.
-
+    based on 9 items in the array being present in the return array at any given time.
 */
 
 
@@ -682,16 +685,16 @@ function filterMenu (option) {
 
 
 
-let newItem = new Item('Test Trading Card1', 'TCG', 'Pokemon', 1999, false, 'Pictures/image_placeholder.png', true, id = 1)
-let newItem2 = new Item('Test Shoe1', 'Shoes', 'Nike', 2004, false, 'Pictures/image_placeholder.png', true, id = 2)
-let newItem3 = new Item('Test Sports Card1', 'Sports Cards', 'MLB', 1980, false, 'Pictures/image_placeholder.png', true, id = 3)
-let newItem4 = new Item('Test Comic Book1', 'Comic Books', 'Marvel', 1960, false, 'Pictures/image_placeholder.png', true, id = 4)
-let newItem5 = new Item('Test Comic Book2', 'Comic Books', 'Marvel', 1960, false, 'Pictures/image_placeholder.png', true, id = 5)
-let newItem6 = new Item('Test Trading Card2', 'TCG', 'Pokemon', 1999, false, 'Pictures/image_placeholder.png', true, id = 6)
-let newItem7 = new Item('Test Trading Card3', 'TCG', 'Pokemon', 1999, false, 'Pictures/image_placeholder.png', true, id = 7)
-let newItem8 = new Item('Test Shoe2', 'Shoes', 'Nike', 2004, false, 'Pictures/image_placeholder.png', true, id = 8)
-let newItem9 = new Item('Test Shoe3', 'Shoes', 'Nike', 2004, false, 'Pictures/image_placeholder.png', true, id = 9)
-let newItem10 = new Item('Test Shoe4', 'Shoes', 'Nike', 2004, false, 'Pictures/image_placeholder.png', true, id = 10)
+let newItem = new Item('Test Trading Card1', 'TCG', 'Pokemon', '1999', 'false', 'Pictures/image_placeholder.png', true, id = 1)
+let newItem2 = new Item('Test Shoe1', 'Shoes', 'Nike', '2004', 'false', 'Pictures/image_placeholder.png', true, id = 2)
+let newItem3 = new Item('Test Sports Card1', 'Sports Cards', 'MLB', '1980', 'false', 'Pictures/image_placeholder.png', true, id = 3)
+let newItem4 = new Item('Test Comic Book1', 'Comic Books', 'Marvel', '1960', 'false', 'Pictures/image_placeholder.png', true, id = 4)
+let newItem5 = new Item('Test Comic Book2', 'Comic Books', 'Marvel', '1960', 'false', 'Pictures/image_placeholder.png', true, id = 5)
+let newItem6 = new Item('Test Trading Card2', 'TCG', 'Pokemon', '1999', 'false', 'Pictures/image_placeholder.png', true, id = 6)
+let newItem7 = new Item('Test Trading Card3', 'TCG', 'Pokemon', '1999', 'false', 'Pictures/image_placeholder.png', true, id = 7)
+let newItem8 = new Item('Test Shoe2', 'Shoes', 'Nike', '2004', 'false', 'Pictures/image_placeholder.png', true, id = 8)
+let newItem9 = new Item('Test Shoe3', 'Shoes', 'Nike', '2004', 'false', 'Pictures/image_placeholder.png', true, id = 9)
+let newItem10 = new Item('Test Shoe4', 'Shoes', 'Nike', '2004', 'false', 'Pictures/image_placeholder.png', true, id = 10)
 
 newItem.init();
 newItem2.init();
