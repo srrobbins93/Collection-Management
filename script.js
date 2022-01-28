@@ -9,6 +9,7 @@ let collectionSelector = document.getElementById('selectCollection');
 let min = -1;
 let max = 8;
 
+
 let brandArray = [
     {optionValue:'null', optionText:'----'},
     {optionValue:'Pokemon', optionText:'Pokemon'},
@@ -533,9 +534,25 @@ function updateOptions (type) {
 
 /* ------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------*/
-// Filter Functions, Methods, and Objects:
+// Filter/Search Functions, Methods, and Objects:
 /* ------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------*/
+function search (target) {
+    let array = target;
+    let searchArray = [];
+    for (item of array) {
+      let target = item.name.toLowerCase();
+      let input = document.getElementById('searchBox').value.toLowerCase();
+      if (input === '') {
+        return collection
+      } else if (target.includes(input)) {
+        item.css.style.display = 'flex';
+          } else if (!target.includes(input)) {
+            item.css.style.display = 'none';
+          }
+    }
+    displayUpdate(searchArray);
+}
 
 function finalFilter (filterState, array) {
     let filterValues = Object.values(filterState);
@@ -575,7 +592,7 @@ function getFilterState(category, brand, year, collection) {
 }
 
 /*
-Current Structure:
+Current Structure of Filter Algo:
 (1) Filter state is obtained using getFilterState(). This represents the state of the filter selectors so that it can be used
     to filter the collection array.
 (2) If filter button is clicked, the filter state is passed to finalFilter()[! Fix function name for readability]
@@ -589,8 +606,9 @@ Current Structure:
 const MinMaxState = () => {
     let max = 8;
     let min = -1;
-    const incrementMinMax = () => {min += 9; max += 9};
-    const decrementMinMax = () => {min -= 9; max -= 9};
+    let page = document.getElementById('pageNumber');
+    const incrementMinMax = () => {min += 9; max += 9; page.innerHTML = Number(page.innerHTML) + 1};
+    const decrementMinMax = () => {min -= 9; max -= 9; page.innerHTML = Number(page.innerHTML) - 1};
     const getMin = () => min;
     const getMax = () => max;
     return {incrementMinMax, decrementMinMax, getMin, getMax}
@@ -616,20 +634,17 @@ function displayUpdate (filteredArray) {
     return newArray;
 }
 
-function shift (direction, type) {
+function shift (direction) {
     let array = toggleDisplayArray();
-    console.log(array);
     if (direction === 'right') {
         if (array.length < 9) {
-            console.log(array)
             return
         };
         minMax.incrementMinMax()
-        console.log(array)
-        toggleDisplayArray(type)
+        toggleDisplayArray()
         if (array.length === 0) {
             minMax.decrementMinMax()
-            toggleDisplayArray(type);
+            toggleDisplayArray();
         };
     };
     if (direction === 'left') {
@@ -640,7 +655,7 @@ function shift (direction, type) {
         if (array.length < 9 === 0) {
             minMax.incrementMinMax()
         };
-        toggleDisplayArray(type);
+        toggleDisplayArray();
     };
 }
 
@@ -709,10 +724,11 @@ newItem10.init();
 
 
 updateOptions('all');
-document.getElementById('leftScroll').addEventListener('click', () => shift('left', 'start'));
-document.getElementById('rightScroll').addEventListener('click', () => shift('right', 'start'));
+document.getElementById('leftScroll').addEventListener('click', () => {shift('left', 'start'); search(collection)});
+document.getElementById('rightScroll').addEventListener('click', () => {shift('right', 'start'); search(collection)});
 document.getElementById('selectCategory').addEventListener('change', () => toggleDisplayArray());
 document.getElementById('selectBrand').addEventListener('change', () => toggleDisplayArray());
 document.getElementById('selectYear').addEventListener('change', () => toggleDisplayArray());
 document.getElementById('selectCollection').addEventListener('change', () => toggleDisplayArray());
+document.getElementById('searchBox').addEventListener('keyup', () => search(collection));
 toggleDisplayArray();

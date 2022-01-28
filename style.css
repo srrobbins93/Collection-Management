@@ -43,6 +43,13 @@ body, #topContainer {
 
 }
 
+#searchImg {
+    align-self: center;
+    height: 35px;
+    width: 35px;
+    margin-right: 10px;
+}
+
 #search {
     display: flex;
     justify-content: space-between;
@@ -54,10 +61,10 @@ body, #topContainer {
     width: 400px;
     height: 50px;
     border-radius: 10px;
-    font-size: 22px
+    font-size: 22px;
 }
 
-#searchSubmit, #addButton  {
+#addButton  {
     width: 100px;
     height: 55px;
     border-radius: 10px;
@@ -68,7 +75,7 @@ body, #topContainer {
     box-shadow: 0px 2px 10px 1px lightgray;
 }
 
-#searchSubmit:hover, #addButton:hover {
+#addButton:hover {
     transition: all .2s ease-in-out;
     box-shadow: 0px 5px 15px 5px lightgray;
 }
@@ -112,6 +119,7 @@ body, #topContainer {
 #scroll {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 25px;
     gap: 50px;
 }
@@ -133,8 +141,14 @@ body, #topContainer {
     transform: scale(1.1);
 }
 
+#pageNumber {
+    font-weight: bold;
+    font-size: 21px;
+    color: #33a1fd;;
+}
+
 #filter {
-    display: flex;
+    display: none;
     font-size: 18px;
     margin-top: 15px;
     padding: 5px;

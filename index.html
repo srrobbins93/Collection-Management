@@ -16,8 +16,8 @@
         <div id="topContainer">
             <div id="searchAndFilter">
                 <div id="search">
-                    <input name="search" type="text"></input>
-                    <button id="searchSubmit">Search</button>
+                    <img src="Pictures/search.png" id="searchImg">
+                    <input id="searchBox" type="text"></input>
                     <img src="Pictures/grey_icon.png" id="filterImgG">
                     <img src="Pictures/color_icon.png" id="filterImgB">
                     <div id="addContainer">
@@ -31,8 +31,42 @@
                 </div>
             </div>
         </div>
+        <div id="filter">
+            <div id="leftFilterContainer">
+                <div id="category" class="additionalFilterItems">Category:
+                    <div class="custom-select" style="width:200px;">
+                        <select id="selectCategory">
+                        </select>
+                    </div>
+                </div>
+                <div id="brand" class="additionalFilterItems">Brand:
+                    <div class="custom-select" style="width:200px;">
+                        <select id="selectBrand">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="rightFilterContainer">
+                <div id="year" class="additionalFilterItems">Year:
+                    <div class="custom-select" style="width:200px;">
+                        <select id="selectYear">
+                        </select>
+                    </div>
+                </div>
+                <div id="collectionStatus" class="additionalFilterItems">Collected:
+                    <div class="custom-select" style="width:200px;">
+                        <select id="selectCollection">
+                            <option value="null">------</option>
+                            <option value="true" >Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="scroll">
             <button id="leftScroll"><</button>
+            <div id="pageNumber">1</div>
             <button id="rightScroll">></button>
         </div>
         <div id="middleContainer">
