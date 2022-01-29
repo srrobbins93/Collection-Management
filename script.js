@@ -537,21 +537,23 @@ function updateOptions (type) {
 // Filter/Search Functions, Methods, and Objects:
 /* ------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------*/
-function search (target) {
-    let array = target;
+function search (target, filterState) {
+    let array = finalFilter(filterState, target)
     let searchArray = [];
     for (item of array) {
       let target = item.name.toLowerCase();
       let input = document.getElementById('searchBox').value.toLowerCase();
       if (input === '') {
         return collection
-      } else if (target.includes(input)) {
-        item.css.style.display = 'flex';
-          } else if (!target.includes(input)) {
+        } else if (target.includes(input)) {
+            item.css.style.display = 'flex'
+            searchArray.push(item);
+        } else if (!target.includes(input)) {
             item.css.style.display = 'none';
-          }
+        }
     }
-    displayUpdate(searchArray);
+    console.log(searchArray);
+    return displayUpdate(searchArray);
 }
 
 function finalFilter (filterState, array) {
@@ -580,7 +582,6 @@ function finalFilter (filterState, array) {
         notSelectedArray.push(item);
     });
     notSelectedArray.forEach(item => item.css.style.display = 'none');
-    console.log(notSelectedArray);
     return displayUpdate(firstArray);
 }
 
@@ -677,7 +678,11 @@ function getValues (array) {
 }
 
 function toggleDisplayArray() {
-        return displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection))
+    if (document.getElementById('searchBox').value) {
+        return search(collection, getFilterState(selectCategory, selectBrand, selectYear, selectCollection))
+    }
+    console.log('works')
+    return displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection));
 }
 
 function filterMenu (option) {
@@ -690,6 +695,22 @@ function filterMenu (option) {
         document.getElementById('filterImgB').style.display = 'none';
         document.getElementById('filter').style.display = 'none';
     }
+}
+
+
+function throwError (type) {
+    const errorScreen = document.getElementById('error');
+    const errorButton = document.getElementById('errorButton');
+    const errorMsg = document.getElementById('errorMsg');
+    errorScreen.classList.add('active');
+    if (type === 'input') {
+        errorMsg.value = 'Length of input is too long. Please limit use of characters to 10'
+    }
+    errorButton.addEventListener('click', () => {
+        errorScreen.classList.remove('active');
+        document.getElementById('overlay').classList.remove('active');
+    }
+    )
 }
 
 /* ------------------------------------------------------------------------------------------------
@@ -724,11 +745,31 @@ newItem10.init();
 
 
 updateOptions('all');
-document.getElementById('leftScroll').addEventListener('click', () => {shift('left', 'start'); search(collection)});
-document.getElementById('rightScroll').addEventListener('click', () => {shift('right', 'start'); search(collection)});
-document.getElementById('selectCategory').addEventListener('change', () => toggleDisplayArray());
-document.getElementById('selectBrand').addEventListener('change', () => toggleDisplayArray());
-document.getElementById('selectYear').addEventListener('change', () => toggleDisplayArray());
-document.getElementById('selectCollection').addEventListener('change', () => toggleDisplayArray());
-document.getElementById('searchBox').addEventListener('keyup', () => search(collection));
+//Left and Right Page Arrow
+document.getElementById('leftScroll').addEventListener('click', () => {
+    shift('left', 'start');
+    toggleDisplayArray();
+    });
+document.getElementById('rightScroll').addEventListener('click', () => {
+    shift('right', 'start');
+   toggleDisplayArray();
+    });
+//Filter Select Boxes
+document.getElementById('selectCategory').addEventListener('change', () => {
+    toggleDisplayArray();
+    //document.getElementById('searchBox').value = '';
+    });
+document.getElementById('selectBrand').addEventListener('change', () => {
+    toggleDisplayArray();
+    document.getElementById('searchBox').value = '';
+    });
+document.getElementById('selectYear').addEventListener('change', () => {
+    toggleDisplayArray();
+    document.getElementById('searchBox').value = '';
+    });
+document.getElementById('selectCollection').addEventListener('change', () => {
+    toggleDisplayArray();
+    document.getElementById('searchBox').value = '';
+    });
+document.getElementById('searchBox').addEventListener('keyup', () =>  toggleDisplayArray());
 toggleDisplayArray();
