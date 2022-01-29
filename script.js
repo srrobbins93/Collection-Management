@@ -344,6 +344,16 @@ let yearArray = [
         newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add',
         [
             {type:'click', function: () => {
+                if (nameText.value.length > 18) {
+                    throwError('input');
+                    return;
+                } else if (year.value.length > 4) {
+                    throwError('year');
+                    return;
+                } else if (isNaN(year.value)) {
+                    throwError('yearNotNumber');
+                    return;
+                }
                 let newItem = new Item(
                     nameText.value,
                     document.getElementById('categorySelect').value,
@@ -383,6 +393,10 @@ let yearArray = [
     document.getElementById('popUpBody').appendChild(nameText);
     newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add',
     [{type: 'click', function: () => {
+        if (nameText.value.length > 10) {
+            throwError('other');
+            return;
+        };
         categoryArray.push({optionValue:String(nameText.value), optionText:String(nameText.value)});
         updateOptions('category');
         document.body.removeChild(this.css);
@@ -405,6 +419,10 @@ nameText.type = 'text';
 nameText.id = 'nameBox'
 document.getElementById('popUpBody').appendChild(nameText);
 newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Add', [{type:'click', function:() => {
+    if (nameText.value.length > 10) {
+        throwError('other');
+        return;
+    };
     brandArray.push({optionValue:String(nameText.value), optionText:String(nameText.value)});
     updateOptions('brand');
     document.body.removeChild(this.css);
@@ -416,7 +434,25 @@ newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Ad
 this.initValue = true;
 }
 
-
+function throwError (type) {
+    const errorScreen = document.getElementById('error');
+    const errorButton = document.getElementById('errorButton');
+    const errorMsg = document.getElementById('errorMsg');
+    errorScreen.classList.add('active');
+    if (type === 'input') {
+        errorMsg.innerHTML = 'Character length of Item Name is too long. Please limit number of characters to 18.';
+    } else if (type === 'year') {
+        errorMsg.innerHTML = 'Character length of year is too long. Please limit number of characters to 4.';
+    } else if (type === 'yearNotNumber') {
+        errorMsg.innerHTML = 'Your input for year must be a number.';
+    } else if (type === 'other') {
+        errorMsg.innerHTML = 'Character length of Item Name is too long. Please limit number of characters to 10.';
+    };
+    errorButton.addEventListener('click', () => {
+        errorScreen.classList.remove('active');
+        document.getElementById('overlay').classList.remove('active');
+    })
+}
 
 
 /* ------------------------------------------------------------------------------------------------
@@ -698,20 +734,7 @@ function filterMenu (option) {
 }
 
 
-function throwError (type) {
-    const errorScreen = document.getElementById('error');
-    const errorButton = document.getElementById('errorButton');
-    const errorMsg = document.getElementById('errorMsg');
-    errorScreen.classList.add('active');
-    if (type === 'input') {
-        errorMsg.value = 'Length of input is too long. Please limit use of characters to 10'
-    }
-    errorButton.addEventListener('click', () => {
-        errorScreen.classList.remove('active');
-        document.getElementById('overlay').classList.remove('active');
-    }
-    )
-}
+
 
 /* ------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------*/
