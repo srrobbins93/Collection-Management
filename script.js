@@ -30,10 +30,11 @@ let categoryArray = [
 
 let yearArray = [
     {optionValue:'null', optionText:'----'},
-    {optionValue: '1960', optionText:'1960'},
+    {optionValue: '1963', optionText:'1963'},
     {optionValue: '1980', optionText:'1980'},
+    {optionValue:'1993', optionText:'1993'},
     {optionValue:'1999', optionText:'1999'},
-    {optionValue:'2004', optionText:'2004'},
+    {optionValue:'2010', optionText:'2010'},
 
 
 ];
@@ -136,8 +137,8 @@ let yearArray = [
         let cardImageContainer = document.createElement('div');
         cardImageContainer.setAttribute('id', 'cardImage');
         this.css.appendChild(cardImageContainer);
-        if (this.cardImage === false) {
-            this.cardImage = 'Pictures/upload.png';
+        if (this.cardImage === '') {
+            this.cardImage = 'Pictures/image_placeholder.png';
         }
         let image = document.createElement('img');
         image.src= this.cardImage;
@@ -347,11 +348,17 @@ let yearArray = [
                 if (nameText.value.length > 18) {
                     throwError('input');
                     return;
+                } else if (nameText.value.length === 0) {
+                    throwError('empty');
+                    return;
                 } else if (year.value.length > 4) {
                     throwError('year');
                     return;
                 } else if (isNaN(year.value)) {
                     throwError('yearNotNumber');
+                    return;
+                } else if (year.value.length === 0) {
+                    throwError('empty');
                     return;
                 }
                 let newItem = new Item(
@@ -396,6 +403,9 @@ let yearArray = [
         if (nameText.value.length > 10) {
             throwError('other');
             return;
+        } else if (nameText.value.length === 0) {
+            throwError('empty');
+            return;
         };
         categoryArray.push({optionValue:String(nameText.value), optionText:String(nameText.value)});
         updateOptions('category');
@@ -422,6 +432,9 @@ newElement('button','id', 'addButton', document.getElementById('popUpBody'), 'Ad
     if (nameText.value.length > 10) {
         throwError('other');
         return;
+    } else if (nameText.value.length === 0) {
+        throwError('empty');
+        return;
     };
     brandArray.push({optionValue:String(nameText.value), optionText:String(nameText.value)});
     updateOptions('brand');
@@ -435,10 +448,12 @@ this.initValue = true;
 }
 
 function throwError (type) {
-    const errorScreen = document.getElementById('error');
-    const errorButton = document.getElementById('errorButton');
-    const errorMsg = document.getElementById('errorMsg');
+    let errorScreen = document.getElementById('error');
+    let errorButton = document.getElementById('errorButton');
+    let errorMsg = document.getElementById('errorMsg');
+    let overlay = document.getElementById('overlay');
     errorScreen.classList.add('active');
+    overlay.classList.add('active');
     if (type === 'input') {
         errorMsg.innerHTML = 'Character length of Item Name is too long. Please limit number of characters to 18.';
     } else if (type === 'year') {
@@ -447,10 +462,11 @@ function throwError (type) {
         errorMsg.innerHTML = 'Your input for year must be a number.';
     } else if (type === 'other') {
         errorMsg.innerHTML = 'Character length of Item Name is too long. Please limit number of characters to 10.';
-    };
+    } else if (type === 'empty') {
+        errorMsg.innerHTML = 'Your input can not be empty. Please try again.';
+    }
     errorButton.addEventListener('click', () => {
         errorScreen.classList.remove('active');
-        document.getElementById('overlay').classList.remove('active');
     })
 }
 
@@ -744,16 +760,16 @@ function filterMenu (option) {
 
 
 
-let newItem = new Item('Test Trading Card1', 'TCG', 'Pokemon', '1999', 'false', 'Pictures/image_placeholder.png', true, id = 1)
-let newItem2 = new Item('Test Shoe1', 'Shoes', 'Nike', '2004', 'false', 'Pictures/image_placeholder.png', true, id = 2)
-let newItem3 = new Item('Test Sports Card1', 'Sports Cards', 'MLB', '1980', 'false', 'Pictures/image_placeholder.png', true, id = 3)
-let newItem4 = new Item('Test Comic Book1', 'Comic Books', 'Marvel', '1960', 'false', 'Pictures/image_placeholder.png', true, id = 4)
-let newItem5 = new Item('Test Comic Book2', 'Comic Books', 'Marvel', '1960', 'false', 'Pictures/image_placeholder.png', true, id = 5)
-let newItem6 = new Item('Test Trading Card2', 'TCG', 'Pokemon', '1999', 'false', 'Pictures/image_placeholder.png', true, id = 6)
-let newItem7 = new Item('Test Trading Card3', 'TCG', 'Pokemon', '1999', 'false', 'Pictures/image_placeholder.png', true, id = 7)
-let newItem8 = new Item('Test Shoe2', 'Shoes', 'Nike', '2004', 'false', 'Pictures/image_placeholder.png', true, id = 8)
-let newItem9 = new Item('Test Shoe3', 'Shoes', 'Nike', '2004', 'false', 'Pictures/image_placeholder.png', true, id = 9)
-let newItem10 = new Item('Test Shoe4', 'Shoes', 'Nike', '2004', 'false', 'Pictures/image_placeholder.png', true, id = 10)
+let newItem = new Item('Black Lotus', 'TCG', 'MTG', '1993', 'false', 'https://preview.redd.it/jk2oxx8cq4m21.png?auto=webp&s=4bf9fa1dc7dbc424585aec832f4068c64290d03c', true, id = 1)
+let newItem2 = new Item('White Airforce One', 'Shoes', 'Nike', '2010', 'false', 'https://i.pinimg.com/originals/37/83/12/3783124e847169fc0dcda716c8dbc9db.png', true, id = 2)
+let newItem3 = new Item('Peyton Manning', 'Sports Cards', 'NFL', '1999', 'false', 'https://cconnect.s3.amazonaws.com/wp-content/uploads/2021/02/1998-Playoff-Contenders-Rookie-Ticket-Autograph-Peyton-Manning-RC-87-10-Best-Peyton-Manning-Rookie-Cards-of-All-Time-thumb-700.jpg', true, id = 3)
+let newItem4 = new Item('The Amazing Spirderman', 'Comic Books', 'Marvel', '1960', 'false', 'https://i.annihil.us/u/prod/marvel/i/mg/d/40/5196582d03800/clean.jpg', true, id = 4)
+let newItem5 = new Item('The Avengers', 'Comic Books', 'Marvel', '1960', 'false', 'https://i.annihil.us/u/prod/marvel/i/mg/3/d0/519b819d54e34/clean.jpg', true, id = 5)
+let newItem6 = new Item('Charizard', 'TCG', 'Pokemon', '1999', 'true', 'https://den-cards.pokellector.com/197/Charizard.EVO.11.13280.png', true, id = 6)
+let newItem7 = new Item('Jace, The Mind Sculptor', 'TCG', 'MTG', '2018', 'true', 'https://c1.scryfall.com/file/scryfall-cards/png/front/c/0/c057dc0d-4017-4e60-9c5e-45fc569a8d31.png?1562440655', true, id = 7)
+let newItem8 = new Item('Cream Airforce One', 'Shoes', 'Nike', '2010', 'true', 'https://cdn.shopify.com/s/files/1/0602/3187/6778/products/b9a00d66361ebbfa4211596ebe274c8e_1024x1024.jpg?v=1636441591', true, id = 8)
+let newItem9 = new Item('Blue Airforce One', 'Shoes', 'Nike', '2010', 'false', 'https://i.pinimg.com/564x/f1/25/87/f125878ee1d9a9177a8e035d205b8b2c.jpg', true, id = 9)
+let newItem10 = new Item('Lilac Airforce One', 'Shoes', 'Nike', '2010', 'false', 'https://i.pinimg.com/564x/17/e6/fd/17e6fd792cdffa9587de64d1a593021e.jpg', true, id = 10)
 
 newItem.init();
 newItem2.init();

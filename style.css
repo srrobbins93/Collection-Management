@@ -449,3 +449,32 @@ font-size: 16px;
     opacity: 1;
     pointer-events: all;
 }
+
+footer {
+    display: inline;
+    flex-direction: column;
+    margin-bottom: 150px;
+}
+
+a {
+    margin-right: 10px;
+}
+
+a:link, a:visited {
+    font-size: 16;
+    color: #33a1fd;
+    text-decoration: none;
+}
+
+a:hover {
+    font-size: 16;
+    color: #33a1fd;
+    text-decoration: underline;
+}
+
+footer img {
+    height: auto;
+    width: 20px;
+    margin-top: 50px;
+
+}
