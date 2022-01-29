@@ -14,7 +14,7 @@ let brandArray = [
     {optionValue:'null', optionText:'----'},
     {optionValue:'Pokemon', optionText:'Pokemon'},
     {optionValue:'MTG', optionText:'MTG'},
-    {optionValue:'MLB', optionText:'MLB'},
+    {optionValue:'NFL', optionText:'NFL'},
     {optionValue:'Nike', optionText:'Nike'}
 ];
 let categoryArray = [
