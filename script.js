@@ -12,31 +12,16 @@ let max = 8;
 
 let brandArray = [
     {optionValue:'null', optionText:'----'},
-    {optionValue:'Pokemon', optionText:'Pokemon'},
-    {optionValue:'MTG', optionText:'MTG'},
-    {optionValue:'NFL', optionText:'NFL'},
-    {optionValue:'Nike', optionText:'Nike'}
+    {optionValue:'Generic Card Game', optionText:'Generic Card Game'},
 ];
 let categoryArray = [
     {optionValue:'null', optionText:'----'},
     {optionValue:'TCG', optionText:'TCG'},
-    {optionValue:'Comic Books', optionText:'Comic Books'},
-    {optionValue:'Shoes', optionText:'Shoes'},
-    {optionValue:'Stamps', optionText:'Stamps'},
-    {optionValue:'Coins', optionText:'Coins'},
-    {optionValue:'Books', optionText:'Books'},
-    {optionValue:'Sports Cards', optionText:'Sports Cards'},
 ];
 
 let yearArray = [
     {optionValue:'null', optionText:'----'},
-    {optionValue: '1963', optionText:'1963'},
-    {optionValue: '1980', optionText:'1980'},
     {optionValue:'1993', optionText:'1993'},
-    {optionValue:'1999', optionText:'1999'},
-    {optionValue:'2010', optionText:'2010'},
-
-
 ];
 
     document.getElementById('options').style.display = 'none'
@@ -644,17 +629,6 @@ function getFilterState(category, brand, year, collection) {
     return state;
 }
 
-/*
-Current Structure of Filter Algo:
-(1) Filter state is obtained using getFilterState(). This represents the state of the filter selectors so that it can be used
-    to filter the collection array.
-(2) If filter button is clicked, the filter state is passed to finalFilter()[! Fix function name for readability]
-    along with the collection to filter the collection array based on the filterState and return a new array that
-    will be past to displayUpdate().
-(3) The new array from finalFilter is passed to displayUpdate and is filtered so that only 9 cards are displayed at a time
-    based on 9 items in the array being present in the return array at any given time.
-*/
-
 
 const MinMaxState = () => {
     let max = 8;
@@ -733,7 +707,6 @@ function toggleDisplayArray() {
     if (document.getElementById('searchBox').value) {
         return search(collection, getFilterState(selectCategory, selectBrand, selectYear, selectCollection))
     }
-    console.log('works')
     return displayUpdate(finalFilter(getFilterState(selectCategory, selectBrand, selectYear, selectCollection), collection));
 }
 
@@ -760,28 +733,11 @@ function filterMenu (option) {
 
 
 
-let newItem = new Item('Black Lotus', 'TCG', 'MTG', '1993', 'false', 'https://preview.redd.it/jk2oxx8cq4m21.png?auto=webp&s=4bf9fa1dc7dbc424585aec832f4068c64290d03c', true, id = 1)
-let newItem2 = new Item('White Airforce One', 'Shoes', 'Nike', '2010', 'false', 'https://i.pinimg.com/originals/37/83/12/3783124e847169fc0dcda716c8dbc9db.png', true, id = 2)
-let newItem3 = new Item('Peyton Manning', 'Sports Cards', 'NFL', '1999', 'false', 'https://cconnect.s3.amazonaws.com/wp-content/uploads/2021/02/1998-Playoff-Contenders-Rookie-Ticket-Autograph-Peyton-Manning-RC-87-10-Best-Peyton-Manning-Rookie-Cards-of-All-Time-thumb-700.jpg', true, id = 3)
-let newItem4 = new Item('The Amazing Spirderman', 'Comic Books', 'Marvel', '1960', 'false', 'https://i.annihil.us/u/prod/marvel/i/mg/d/40/5196582d03800/clean.jpg', true, id = 4)
-let newItem5 = new Item('The Avengers', 'Comic Books', 'Marvel', '1960', 'false', 'https://i.annihil.us/u/prod/marvel/i/mg/3/d0/519b819d54e34/clean.jpg', true, id = 5)
-let newItem6 = new Item('Charizard', 'TCG', 'Pokemon', '1999', 'true', 'https://den-cards.pokellector.com/197/Charizard.EVO.11.13280.png', true, id = 6)
-let newItem7 = new Item('Jace, The Mind Sculptor', 'TCG', 'MTG', '2018', 'true', 'https://c1.scryfall.com/file/scryfall-cards/png/front/c/0/c057dc0d-4017-4e60-9c5e-45fc569a8d31.png?1562440655', true, id = 7)
-let newItem8 = new Item('Cream Airforce One', 'Shoes', 'Nike', '2010', 'true', 'https://cdn.shopify.com/s/files/1/0602/3187/6778/products/b9a00d66361ebbfa4211596ebe274c8e_1024x1024.jpg?v=1636441591', true, id = 8)
-let newItem9 = new Item('Blue Airforce One', 'Shoes', 'Nike', '2010', 'false', 'https://i.pinimg.com/564x/f1/25/87/f125878ee1d9a9177a8e035d205b8b2c.jpg', true, id = 9)
-let newItem10 = new Item('Lilac Airforce One', 'Shoes', 'Nike', '2010', 'false', 'https://i.pinimg.com/564x/17/e6/fd/17e6fd792cdffa9587de64d1a593021e.jpg', true, id = 10)
+let newItem = new Item('Sample Trading Card', 'TCG', 'Generic Card Game', '1993', 'false', 'Pictures/image_placeholder.png', true, id = 1)
 
 newItem.init();
-newItem2.init();
-newItem3.init();
-newItem4.init();
-newItem5.init();
-newItem6.init();
-newItem7.init();
-newItem8.init();
-newItem9.init();
-newItem10.init();
 
+// Additional event listeners for page navigation and filter select.
 
 updateOptions('all');
 //Left and Right Page Arrow
@@ -793,10 +749,10 @@ document.getElementById('rightScroll').addEventListener('click', () => {
     shift('right', 'start');
    toggleDisplayArray();
     });
+
 //Filter Select Boxes
 document.getElementById('selectCategory').addEventListener('change', () => {
     toggleDisplayArray();
-    //document.getElementById('searchBox').value = '';
     });
 document.getElementById('selectBrand').addEventListener('change', () => {
     toggleDisplayArray();
